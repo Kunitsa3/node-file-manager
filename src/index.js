@@ -18,6 +18,7 @@ import { calculateHash } from './hash/hash.js';
 import { getPath } from './helper/helpers.js';
 import { compress } from './compress/compress.js';
 import { decompress } from './compress/decompress.js';
+import { move } from './fs/move.js';
 
 const name = process.argv.filter(arg => arg.startsWith('--username'))[0].slice(11);
 console.log(`Welcome to the File Manager, ${name}!`);
@@ -77,6 +78,13 @@ process.stdin.on('data', data => {
     if (stringData.startsWith('cp')) {
       const [filePath, newDirectoryPath] = stringData.slice(3).split(' ');
       copy(getPath(filePath), getPath(newDirectoryPath));
+      getCurrentDirectory();
+      return;
+    }
+
+    if (stringData.startsWith('mv')) {
+      const [filePath, newDirectoryPath] = stringData.slice(3).split(' ');
+      move(getPath(filePath), getPath(newDirectoryPath));
       getCurrentDirectory();
       return;
     }
